@@ -32,18 +32,31 @@ app.get('/collections/lessons', (req, res, next) => {
         next(error);
       });
   }); 
-app.post("/", function(req, res) {
- res.send("lessons");
-});
+// app.post("/", function(req, res) {
+//  res.send("lessons");
+// });
 // app.put("/", function(req, res) {
-//  res.send(”Ok, let’s change an element");
+//  res.send("lessons");
 // });
 // app.delete("/", function(req, res) {
-//  res.send(”Are you sure??? Ok, let’s delete a record");
+//  res.send(lessons");
 // });
 // app.listen(3000, function() {
 //  console.log("CRUD app listening on port 3000");
 // });
+
+app.post('/collection/:collectionName', async (req, res, next) => {
+    const { collectionName } = req.params;
+    const newDocument = req.body;
+
+    try {
+        const collection = db.collection(collectionName);
+        const result = await collection.insertOne(newDocument);
+        res.status(201).send({ message: 'Document created successfully', documentId: result.insertedId });
+    } catch (err) {
+        next(err);
+    }
+});
 
 
 const port = process.env.PORT || 3000;
