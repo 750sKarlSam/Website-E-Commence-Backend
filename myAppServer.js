@@ -1,21 +1,23 @@
-const { db } = require("./mongoDB");
+const { db } = require("./mongodbdatabase");
 const express = require("express");
 const morgan = require("morgan");
 const fs = require("fs");
 const cors = require ("cors");
+const bodyParser = require("body-parser");
 
 const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 
+app.use(bodyParser.json());
+
 const corsOptions = {
-    origin: ['https://750skarlsam.github.io/Website-E-Commence/'],
+    origin: ['https://750skarlsam.github.io/Website-E-Commence/','http://127.0.0.1:3001'],
     methods: ['GET','POST','PUT','DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
-var express = require("express");
 app.get('/collections/lessons', (req, res, next) => {
     // Query the MongoDB 'lessons' collection
     db.collection('lessons')
@@ -30,9 +32,9 @@ app.get('/collections/lessons', (req, res, next) => {
         next(error);
       });
   }); 
-// app.post("/", function(req, res) {
-//  res.send("a POST request? Let’s create a new element");
-// });
+app.post("/", function(req, res) {
+ res.send("lessons");
+});
 // app.put("/", function(req, res) {
 //  res.send(”Ok, let’s change an element");
 // });
